@@ -119,6 +119,16 @@ break;
         .setColor(`GREEN`)
     return message.channel.send(queueemb)
 break;
+     case "loop":
+       const serverQueue = queue.get(message.guild.id);
+ 	if (!message.member.voiceChannel) return message.channel.send({ embed: { description: 'Please Connect To A Voice Channel To Loop The Song!'}});
+    if(serverQueue.voiceChannel.id !== message.member.voiceChannel.id) return message.channel.send({ embed: { color: 0xf91d1d, description: `You must be in **${serverQueue.voiceChannel.name}** to skip the song`}});
+		if (!serverQueue) return message.channel.send({ embed: { description: 'There Is Nothing Playing In The Server Right Now'}});
+  serverQueue.loop.single = !serverQueue.loop.single;
+  client.queue.set(message.guild.id, serverQueue);
+  if(serverQueue.loop.single) return message.channel.send({ embed: { description: '🔁 Looping Current Song.'}});
+  return message.channel.send({ embed: { description: 'Sucessfully Loop off.'}});
+      break;
  case "stop":
     if (!message.member.voiceChannel) return message.channel.send('Please connect to a voice channel.');
 
@@ -127,7 +137,7 @@ break;
   return message.channel.send('**Successfully Leaved**')
   break;
 }
-async function handleVideo(video, message, voiceChannel, playlist = false) {
+async function handleVideo(video, message, voiceChannel, playlist = true) {
   var serverQueue = queue.get(message.guild.id);
   console.log(video);
   var song = {
