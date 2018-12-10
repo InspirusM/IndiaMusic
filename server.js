@@ -252,4 +252,4 @@ message.channel.send(support);
   }
 });
 
-client.login("token");
+client.login(process.env.TOKEN)
