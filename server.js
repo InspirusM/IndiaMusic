@@ -119,16 +119,6 @@ break;
         .setColor(`GREEN`)
     return message.channel.send(queueemb)
 break;
-     case "loop":
-       const serverQueue = queue.get(message.guild.id);
- 	if (!message.member.voiceChannel) return message.channel.send({ embed: { description: 'Please Connect To A Voice Channel To Loop The Song!'}});
-    if(serverQueue.voiceChannel.id !== message.member.voiceChannel.id) return message.channel.send({ embed: { color: 0xf91d1d, description: `You must be in **${serverQueue.voiceChannel.name}** to skip the song`}});
-		if (!serverQueue) return message.channel.send({ embed: { description: 'There Is Nothing Playing In The Server Right Now'}});
-  serverQueue.loop.single = !serverQueue.loop.single;
-  client.queue.set(message.guild.id, serverQueue);
-  if(serverQueue.loop.single) return message.channel.send({ embed: { description: '🔁 Looping Current Song.'}});
-  return message.channel.send({ embed: { description: 'Sucessfully Loop off.'}});
-      break;
  case "stop":
     if (!message.member.voiceChannel) return message.channel.send('Please connect to a voice channel.');
 
@@ -227,29 +217,6 @@ async function handleVideo(video, message, voiceChannel, playlist = true) {
     serverQueue.textChannel.send(playingemb);
 
 }
-  const prefix = config.prefix
-  let messageArray = message.content.split(" ");
-  let cmd = messageArray[0];
-  let args = messageArray.slice(1);
-
-    if(cmd === `${prefix}help`) {
-  let bicon = client.user.displayAvatarURL;
-  let support = new Discord.RichEmbed()
-.setAuthor(client.user.username)
-.setThumbnail(bicon)
-.setColor("RANDOM")
-.setTitle("**My Commands**")
-.addField(`${prefix}play`,"To Play Music")
-.addField(`${prefix}skip`,"To Skip Music")
-.addField(`${prefix}np`,"To See Now Playing Music")
-.addField(`${prefix}queue`,"To See Server Queue")
-.addField(`${prefix}stop`,"To Leave The Vc")
-.addField(`${prefix}radio`,"Listen.Moe Radio")
-.setTimestamp()
-.setFooter('Reqeuested By ' + message.author.tag)
-
-message.channel.send(support);
-  }
 });
 
 client.login(process.env.TOKEN)
